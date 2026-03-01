@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>경력 & 학력</title>
   <link rel="stylesheet" href="/css/style.css" />
+  <script>(function(){var t=localStorage.getItem('theme')||'dark';document.documentElement.setAttribute('data-theme',t);})()</script>
 </head>
 <body>
 <nav>
@@ -16,11 +17,20 @@
       <li><a href="/projects.html">프로젝트</a></li>
       <li><a href="/blog/">블로그</a></li>
     </ul>
+    <button class="theme-btn" id="theme-toggle" onclick="toggleTheme()">☀</button>
   </div>
 </nav>
 
 <main class="page">
-  <h1 class="section-title" style="margin-bottom:36px;">경력 &amp; 학력</h1>
+  <h1 class="section-title" style="margin-bottom:24px;">경력 &amp; 학력</h1>
+
+  <div class="exp-tabs" id="exp-tabs">
+    <button class="exp-tab-btn active" data-type="all">전체 <span class="tab-count"></span></button>
+    <button class="exp-tab-btn" data-type="work">경력 <span class="tab-count"></span></button>
+    <button class="exp-tab-btn" data-type="education">학력 <span class="tab-count"></span></button>
+    <button class="exp-tab-btn" data-type="certification">자격증 <span class="tab-count"></span></button>
+  </div>
+
   <div class="timeline" id="timeline">
     <div class="loading">불러오는 중…</div>
   </div>
@@ -30,22 +40,21 @@
 
 <script src="/js/main.js"></script>
 <script>
-  async function init() {
-    const items = await fetchJSON('/api/experience');
-    const el = document.getElementById('timeline');
+  const TYPE_LABEL = { work: '경력', education: '학력', certification: '자격증' };
 
-    if (!items.length) {
-      el.innerHTML = '<div class="empty-state">등록된 경력·학력이 없습니다.</div>';
+  function renderItems(items, filter) {
+    const el = document.getElementById('timeline');
+    const filtered = filter === 'all' ? items : items.filter(i => i.type === filter);
+
+    if (!filtered.length) {
+      el.innerHTML = '<div class="empty-state">해당 항목이 없습니다.</div>';
       return;
     }
 
-    el.innerHTML = items.map(item => `
+    el.innerHTML = filtered.map(item => `
       <div class="timeline-item">
         <div class="timeline-meta">
-          <span class="timeline-type">${
-            item.type === 'education' ? '학력' :
-            item.type === 'certification' ? '자격증' : '경력'
-          }</span>
+          <span class="timeline-type">${TYPE_LABEL[item.type] || '기타'}</span>
           <span>${esc(item.period)}</span>
         </div>
         <div class="timeline-company">${esc(item.company)}</div>
@@ -56,6 +65,35 @@
         </div>
       </div>
     `).join('');
+  }
+
+  async function init() {
+    const items = await fetchJSON('/api/experience');
+    const el = document.getElementById('timeline');
+
+    if (!items.length) {
+      el.innerHTML = '<div class="empty-state">등록된 경력·학력이 없습니다.</div>';
+      return;
+    }
+
+    // 탭 카운트 업데이트
+    const counts = { all: items.length, work: 0, education: 0, certification: 0 };
+    items.forEach(i => { if (counts[i.type] !== undefined) counts[i.type]++; });
+    document.querySelectorAll('.exp-tab-btn').forEach(btn => {
+      const cnt = counts[btn.dataset.type] ?? 0;
+      btn.querySelector('.tab-count').textContent = cnt ? `(${cnt})` : '';
+    });
+
+    // 탭 클릭 이벤트
+    document.querySelectorAll('.exp-tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.exp-tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderItems(items, btn.dataset.type);
+      });
+    });
+
+    renderItems(items, 'all');
   }
   init();
 </script>

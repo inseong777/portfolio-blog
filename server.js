@@ -92,6 +92,13 @@ app.get('/api/projects', (req, res) => {
   res.json(readData('projects.json'));
 });
 
+app.get('/api/projects/:id', (req, res) => {
+  const projects = readData('projects.json');
+  const project = projects.find(p => String(p.id) === req.params.id);
+  if (!project) return res.status(404).json({ error: '프로젝트를 찾을 수 없습니다.' });
+  res.json(project);
+});
+
 app.post('/api/projects', authRequired, (req, res) => {
   const projects = readData('projects.json');
   const newProject = {

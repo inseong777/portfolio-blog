@@ -88,3 +88,23 @@ function requireAuth() {
     location.replace('/admin/login.html');
   }
 }
+
+// ── Theme ─────────────────────────────────────────────────────────────────────
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') || 'dark';
+  const next = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+  _updateThemeBtns(next);
+}
+
+function _updateThemeBtns(theme) {
+  document.querySelectorAll('.theme-btn').forEach(btn => {
+    btn.textContent = theme === 'dark' ? '☀' : '☾';
+    btn.title = theme === 'dark' ? '라이트 모드로 전환' : '다크 모드로 전환';
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  _updateThemeBtns(document.documentElement.getAttribute('data-theme') || 'dark');
+});

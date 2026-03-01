@@ -11,15 +11,19 @@
     }
 
     grid.innerHTML = projects.map(p => `
-      <div class="project-card">
+      <div class="project-card"
+           onclick="location.href='/project-detail.html?id=${p.id}'"
+           role="button" tabindex="0"
+           onkeydown="if(event.key==='Enter')location.href='/project-detail.html?id=${p.id}'">
         <div class="project-card-title">${esc(p.title)}</div>
         <p class="project-card-desc">${esc(p.description)}</p>
         <div class="project-card-tags">
           ${(p.tags || []).map(t => `<span class="tag">${esc(t)}</span>`).join('')}
         </div>
         <div class="project-card-links">
-          ${p.github ? `<a href="${esc(p.github)}" target="_blank" rel="noopener">GitHub →</a>` : ''}
-          ${p.demo ? `<a href="${esc(p.demo)}" target="_blank" rel="noopener">Demo →</a>` : ''}
+          ${p.github ? `<a href="${esc(p.github)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">GitHub →</a>` : ''}
+          ${p.demo ? `<a href="${esc(p.demo)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Demo →</a>` : ''}
+          <span class="project-card-detail-hint">자세히 보기 →</span>
         </div>
       </div>
     `).join('');
