@@ -1,0 +1,87 @@
+[
+  {
+    "id": 1,
+    "title": "인사급여 시스템 개발",
+    "description": "재직·퇴직, 급여 산정·지급 등 인사급여 전반 기능 개발. DATE → CHAR 타입 변경으로 쿼리 응답속도 7s → 2s (71% 개선).eee",
+    "tags": [
+      "Java",
+      "Spring",
+      "Oracle",
+      "JSP",
+      "realGrid",
+      "mybatis",
+      "JUnit",
+      "Agile"
+    ],
+    "github": "",
+    "demo": "",
+    "date": "2025-07-01"
+  },
+  {
+    "id": 2,
+    "title": "전자정부 시스템 JSP → WebSquare 전환",
+    "description": "전자정부 시스템 화면 27개(메인 21개, 팝업 4개 외)를 JSP에서 WebSquare로 전환. SMS·E-MAIL 알림 JS 기능 구현. 쿼리 최적화로 응답속도 3s → 1s (67% 개선), 공수 5M/M → 3.5M/M (30% 절감), WITH 절 활용으로 Block Read 18,800 → 14,000 (25% 절감).",
+    "tags": [
+      "Java",
+      "Spring",
+      "PostgreSQL",
+      "WebSquare",
+      "mybatis",
+      "SVN",
+      "jennifer"
+    ],
+    "github": "",
+    "demo": "",
+    "date": "2024-09-01"
+  },
+  {
+    "id": 3,
+    "title": "공공기관 Nexacro → WebSquare 화면 전환",
+    "description": "공공기관 소득·세금·진료·건강검진 관련 화면을 Nexacro에서 WebSquare로 전환. Function Based Index 적용 등 쿼리 최적화로 응답속도 15s → 2s (86% 개선), 코드 2500라인 → 800라인 (68% 절감). 팝업 2개 → 1개 통합으로 UX 개선.",
+    "tags": [
+      "Java",
+      "Spring",
+      "Oracle",
+      "WebSquare",
+      "mybatis",
+      "SVN",
+      "jennifer"
+    ],
+    "github": "",
+    "demo": "",
+    "date": "2024-01-01"
+  },
+  {
+    "id": 4,
+    "title": "공공기관 기능 개발 및 API 구축",
+    "description": "로그인·공지사항·통계 분석 기능 개발 및 VDI 환경 API 연동. Clean 코드 기반의 RESTful API 개발로 불필요한 HTTP 호출 제거. HTTP 3개 → 1개로 간소화.",
+    "tags": [
+      "Java",
+      "Spring",
+      "PostgreSQL",
+      "WebSquare",
+      "JSP",
+      "mybatis",
+      "SVN"
+    ],
+    "github": "",
+    "demo": "",
+    "date": "2022-12-01"
+  },
+  {
+    "id": 5,
+    "title": "포트폴리오 블로그",
+    "description": "Node.js + Express로 제작한 개인 이력서 및 블로그 사이트. JWT 인증 기반 관리자 CRUD, Toast UI Editor 기반 마크다운 글 작성 기능 포함.",
+    "tags": [
+      "Node.js",
+      "Express",
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "JWT"
+    ],
+    "github": "",
+    "demo": "",
+    "date": "2026-03-01"
+  }
+]

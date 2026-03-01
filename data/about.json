@@ -1,0 +1,11 @@
+{
+  "name": "배인성",
+  "title": "Java Backend Developer",
+  "tagline": "불필요한 것을 줄이는 Java 개발자",
+  "email": "duddl67011@naver.com",
+  "github": "",
+  "linkedin": "",
+  "photo": "/images/profile.jpg",
+  "bio": "4년차 SI 개발자로, 요구사항 분석부터 설계·개발·배포까지 전 과정을 직접 수행합니다. 사용자의 시각으로 서비스를 바라보며 개선 방향을 빠르게 파악하고, API 개발 및 쿼리 최적화에 강점이 있습니다. 불필요한 코드와 I/O를 줄여 성능을 높이는 개발을 지향합니다.",
+  "skills": ["Java", "Spring", "JSP", "JavaScript", "Oracle", "PostgreSQL", "mybatis", "JUnit", "Git", "WebSquare", "SVN"]
+}

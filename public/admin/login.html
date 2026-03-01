@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>관리자 로그인</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<div class="login-wrap">
+  <div class="login-card">
+    <h1>관리자</h1>
+    <p class="login-subtitle">포트폴리오 관리자 페이지입니다.</p>
+    <div id="alert"></div>
+    <form id="login-form">
+      <div class="form-group">
+        <label for="id-input">아이디</label>
+        <input type="text" id="id-input" placeholder="admin" autocomplete="username" required />
+      </div>
+      <div class="form-group">
+        <label for="pw-input">비밀번호</label>
+        <input type="password" id="pw-input" autocomplete="current-password" required />
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%; margin-top:8px; padding:11px 18px;">로그인</button>
+    </form>
+  </div>
+</div>
+
+<script src="/js/main.js"></script>
+<script>
+  if (localStorage.getItem('token')) location.replace('/admin/dashboard.html');
+
+  document.getElementById('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = document.getElementById('id-input').value.trim();
+    const password = document.getElementById('pw-input').value;
+    try {
+      const data = await postJSON('/api/auth/login', { id, password });
+      localStorage.setItem('token', data.token);
+      location.replace('/admin/dashboard.html');
+    } catch (err) {
+      showAlert(err.message || '로그인에 실패했습니다.', 'error');
+    }
+  });
+
+  function showAlert(msg, type) {
+    document.getElementById('alert').innerHTML =
+      `<div class="alert alert-${type}">${esc(msg)}</div>`;
+  }
+</script>
+</body>
+</html>

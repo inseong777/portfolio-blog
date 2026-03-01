@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>포트폴리오</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="/">홈</a>
+    <ul class="nav-links">
+      <li><a href="/" class="active">About</a></li>
+      <li><a href="/experience.html">경력</a></li>
+      <li><a href="/projects.html">프로젝트</a></li>
+      <li><a href="/blog/">블로그</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="page">
+  <section class="hero" id="about-section">
+    <div class="loading">불러오는 중…</div>
+  </section>
+
+  <section style="margin-top: 48px;">
+    <h2 class="section-title">Skills</h2>
+    <div class="skills" id="skills-section"></div>
+  </section>
+</main>
+
+<footer>
+  <span id="footer-name"></span> &middot; Built with Node.js &amp; Vanilla JS
+</footer>
+
+<script src="/js/main.js"></script>
+<script>
+  async function init() {
+    const about = await fetchJSON('/api/about');
+    document.title = about.name + ' — 포트폴리오';
+
+    document.getElementById('about-section').innerHTML = `
+      <div class="hero-inner">
+        ${about.photo ? `<img class="hero-photo" src="${esc(about.photo)}" alt="${esc(about.name)} 프로필 사진" />` : ''}
+        <div class="hero-content">
+          <h1 class="hero-name">${esc(about.name)}</h1>
+          <p class="hero-title">${esc(about.title)}</p>
+          <p class="hero-tagline">${esc(about.tagline)}</p>
+          <p class="hero-bio">${esc(about.bio)}</p>
+          <div style="margin-top:28px; display:flex; gap:10px; flex-wrap:wrap;">
+            ${about.email    ? `<a class="btn btn-outline btn-sm" href="mailto:${esc(about.email)}">이메일</a>` : ''}
+            ${about.github   ? `<a class="btn btn-outline btn-sm" href="${esc(about.github)}" target="_blank" rel="noopener">GitHub</a>` : ''}
+            ${about.linkedin ? `<a class="btn btn-outline btn-sm" href="${esc(about.linkedin)}" target="_blank" rel="noopener">LinkedIn</a>` : ''}
+          </div>
+        </div>
+      </div>
+    `;
+
+    const skillsEl = document.getElementById('skills-section');
+    (about.skills || []).forEach(s => {
+      const span = document.createElement('span');
+      span.className = 'tag';
+      span.textContent = s;
+      skillsEl.appendChild(span);
+    });
+
+    document.getElementById('footer-name').textContent = about.name;
+  }
+  init();
+</script>
+</body>
+</html>

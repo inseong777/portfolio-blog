@@ -1,0 +1,11 @@
+[
+  {
+    "id": 1,
+    "slug": "hello-world",
+    "title": "첫 번째 블로그 글",
+    "summary": "블로그를 시작하며 간단히 소개합니다.",
+    "content": "# 안녕하세요\n\n이 블로그는 Node.js와 순수 HTML/CSS/JS로 만든 개인 이력서 + 블로그입니다.\n\n앞으로 개발하면서 배운 것들을 기록할 예정입니다.\n\n## 사용 기술\n\n- **백엔드**: Node.js, Express\n- **인증**: JWT, bcryptjs\n- **데이터**: JSON 파일\n- **프론트엔드**: HTML5, CSS3, Vanilla JS\n\n감사합니다!",
+    "date": "2026-03-01",
+    "published": true
+  }
+]

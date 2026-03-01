@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "type": "work",
+    "company": "현 재직 회사 (G2급 공공 SI)",
+    "role": "DevOps팀 / Java Backend Developer",
+    "period": "2022.05 — 현재 (3년 11개월)",
+    "description": "공공기관 대상 SI 프로젝트에서 요구사항 분석·설계·개발·배포 전 과정 담당. 인사급여 시스템 신규 개발, 전자정부 및 공공기관 시스템 화면 전환(JSP → WebSquare, Nexacro → WebSquare), VDI 환경 API 연동 등 다양한 공공 프로젝트 수행.",
+    "tags": ["Java", "Spring", "Oracle", "PostgreSQL", "mybatis", "WebSquare", "JSP", "JUnit", "Git", "SVN"]
+  },
+  {
+    "id": 2,
+    "type": "education",
+    "company": "대학교 (학교명 업데이트 필요)",
+    "role": "소프트웨어 관련 전공",
+    "period": "2015.03 — 2021.02",
+    "description": "소프트웨어 관련 전공 이수. 2019년 C언어 프로그래밍 대회 수상.",
+    "tags": ["Java", "C", "알고리즘", "자료구조"]
+  },
+  {
+    "id": 3,
+    "type": "certification",
+    "company": "SQLD",
+    "role": "SQL 개발자",
+    "period": "2022.12 취득",
+    "description": "한국데이터산업진흥원 주관 SQL 개발자 자격증 취득.",
+    "tags": ["SQL", "Oracle", "DB 설계"]
+  },
+  {
+    "id": 4,
+    "type": "certification",
+    "company": "정보처리기사",
+    "role": "정보처리기사",
+    "period": "2020.08 취득",
+    "description": "한국산업인력공단 주관 정보처리기사 자격증 취득.",
+    "tags": ["CS", "알고리즘", "DB", "운영체제"]
+  },
+  {
+    "id": 5,
+    "type": "certification",
+    "company": "OPIc IH",
+    "role": "영어 말하기 (ACTFL)",
+    "period": "2023.12 취득",
+    "description": "ACTFL 공인 영어 말하기 시험 OPIc IH 등급 취득.",
+    "tags": ["영어", "OPIc", "ACTFL"]
+  }
+]

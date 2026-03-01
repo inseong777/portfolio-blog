@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>글 편집기</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <!-- Toast UI Editor -->
+  <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+  <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/theme/toastui-editor-dark.min.css" />
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="/admin/dashboard.html">← 대시보드</a>
+    <ul class="nav-links">
+      <li><a href="#" id="logout-btn">로그아웃</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="page" style="max-width:1100px;">
+  <div id="alert" style="margin-bottom:16px;"></div>
+
+  <!-- Meta fields -->
+  <div style="display:grid; grid-template-columns:1fr 1fr 1fr auto; gap:12px; margin-bottom:16px; align-items:end;">
+    <div class="form-group" style="margin:0;">
+      <label>제목</label>
+      <input type="text" id="post-title" placeholder="제목을 입력하세요" />
+    </div>
+    <div class="form-group" style="margin:0;">
+      <label>슬러그 (URL)</label>
+      <input type="text" id="post-slug" placeholder="자동 생성" />
+    </div>
+    <div class="form-group" style="margin:0;">
+      <label>날짜</label>
+      <input type="date" id="post-date" />
+    </div>
+    <div style="display:flex; flex-direction:column; gap:6px; padding-bottom:1px;">
+      <label>공개 여부</label>
+      <label style="display:flex; align-items:center; gap:8px; cursor:pointer; margin-top:2px;">
+        <input type="checkbox" id="post-published" checked />
+        <span style="font-size:.88rem; color:var(--text);">공개</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="form-group" style="margin-bottom:16px;">
+    <label>요약 (목록에 표시)</label>
+    <input type="text" id="post-summary" placeholder="글의 간단한 요약" />
+  </div>
+
+  <div style="display:flex; gap:12px; margin-bottom:20px;">
+    <button class="btn btn-primary" id="save-btn">저장</button>
+    <a href="/admin/dashboard.html" class="btn btn-outline">취소</a>
+  </div>
+
+  <div id="editor-container"></div>
+</main>
+
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+  requireAuth();
+
+  const today = new Date().toISOString().slice(0, 10);
+  document.getElementById('post-date').value = today;
+
+  const editor = new toastui.Editor({
+    el: document.getElementById('editor-container'),
+    height: '600px',
+    initialEditType: 'wysiwyg',
+    previewStyle: 'vertical',
+    theme: 'dark',
+    placeholder: '내용을 입력하세요...',
+    toolbarItems: [
+      ['heading', 'bold', 'italic', 'strike'],
+      ['hr', 'quote'],
+      ['ul', 'ol', 'task', 'indent', 'outdent'],
+      ['table', 'image', 'link'],
+      ['code', 'codeblock'],
+    ],
+  });
+
+  const editSlug = new URLSearchParams(location.search).get('slug');
+  if (editSlug) loadPost(editSlug);
+
+  async function loadPost(slug) {
+    try {
+      const post = await fetchJSON(`/api/admin/posts/${encodeURIComponent(slug)}`, { auth: true });
+      document.getElementById('post-title').value   = post.title || '';
+      document.getElementById('post-slug').value    = post.slug || '';
+      document.getElementById('post-summary').value = post.summary || '';
+      document.getElementById('post-date').value    = post.date || today;
+      document.getElementById('post-published').checked = post.published !== false;
+      editor.setMarkdown(post.content || '');
+    } catch {
+      showAlert('글을 불러올 수 없습니다.', 'error');
+    }
+  }
+
+  document.getElementById('save-btn').addEventListener('click', async () => {
+    const title = document.getElementById('post-title').value.trim();
+    if (!title) { showAlert('제목을 입력해주세요.', 'error'); return; }
+
+    const body = {
+      title,
+      slug:      document.getElementById('post-slug').value.trim() || undefined,
+      summary:   document.getElementById('post-summary').value.trim(),
+      content:   editor.getMarkdown(),
+      date:      document.getElementById('post-date').value,
+      published: document.getElementById('post-published').checked,
+    };
+
+    try {
+      if (editSlug) {
+        await putJSON(`/api/posts/${encodeURIComponent(editSlug)}`, body);
+        showAlert('저장되었습니다.', 'success');
+      } else {
+        await postJSON('/api/posts', body);
+        showAlert('발행되었습니다. 잠시 후 대시보드로 이동합니다.', 'success');
+        setTimeout(() => location.replace('/admin/dashboard.html'), 1500);
+      }
+    } catch (err) {
+      showAlert(err.message || '저장에 실패했습니다.', 'error');
+    }
+  });
+
+  document.getElementById('logout-btn').addEventListener('click', (e) => {
+    e.preventDefault();
+    localStorage.removeItem('token');
+    location.replace('/admin/login.html');
+  });
+
+  function showAlert(msg, type) {
+    const el = document.getElementById('alert');
+    el.innerHTML = `<div class="alert alert-${type}">${esc(msg)}</div>`;
+    if (type === 'success') setTimeout(() => el.innerHTML = '', 3000);
+  }
+</script>
+</body>
+</html>

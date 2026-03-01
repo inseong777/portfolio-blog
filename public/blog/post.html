@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>글 로딩 중…</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="/">홈</a>
+    <ul class="nav-links">
+      <li><a href="/">About</a></li>
+      <li><a href="/experience.html">경력</a></li>
+      <li><a href="/projects.html">프로젝트</a></li>
+      <li><a href="/blog/" class="active">블로그</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="page">
+  <div id="post-container">
+    <div class="loading">불러오는 중…</div>
+  </div>
+</main>
+
+<footer>Built with Node.js &amp; Vanilla JS</footer>
+
+<!-- marked.js for Markdown rendering -->
+<script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+<script src="/js/main.js"></script>
+<script>
+  async function init() {
+    const slug = new URLSearchParams(location.search).get('slug');
+    if (!slug) {
+      document.getElementById('post-container').innerHTML =
+        '<div class="empty-state"><p>글을 찾을 수 없습니다.</p><a href="/blog/">목록으로</a></div>';
+      return;
+    }
+
+    try {
+      const post = await fetchJSON(`/api/posts/${encodeURIComponent(slug)}`);
+      document.title = post.title;
+
+      const html = marked.parse(post.content || '');
+      document.getElementById('post-container').innerHTML = `
+        <a href="/blog/" style="font-size:.88rem; color:var(--muted);">← 목록으로</a>
+        <article style="margin-top:32px;">
+          <header class="post-header">
+            <h1 class="post-title">${esc(post.title)}</h1>
+            <p class="post-date">${esc(post.date)}</p>
+          </header>
+          <div class="post-body">${html}</div>
+        </article>
+      `;
+    } catch {
+      document.getElementById('post-container').innerHTML =
+        '<div class="empty-state"><p>글을 불러올 수 없습니다.</p><a href="/blog/">목록으로</a></div>';
+    }
+  }
+  init();
+</script>
+</body>
+</html>
